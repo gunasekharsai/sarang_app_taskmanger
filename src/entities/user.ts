@@ -1,19 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Field, Int, ObjectType } from "type-graphql"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from "typeorm"
 
 @Entity()
-export class User {
+@ObjectType()
+export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
+    @Field(()=>Int)
     id: number
 
-    @Column()
-    task: string
+    @Field(()=> String)
+    @CreateDateColumn()
+    created: Date
 
-    @Column()
-    description: string
+    @Field(()=>String)
+    @UpdateDateColumn()
+    updated: Date
 
+    @Field(()=> String)
     @Column()
-    status: boolean
+    title: string
+
+    @Field(()=> Boolean)
+    @Column()
+    completed :boolean
 }
-
-
-export default User
