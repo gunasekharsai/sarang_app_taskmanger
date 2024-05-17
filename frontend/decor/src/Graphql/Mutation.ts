@@ -17,7 +17,7 @@ export const CREATE_USER_MUTATION = gql `
 
 export const DELETE_TASK =gql`
   mutation deletetask(
-    $id: Number!
+    $id: Float!
   ){
     deletetask(
         id:$id

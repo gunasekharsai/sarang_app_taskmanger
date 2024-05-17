@@ -1,6 +1,6 @@
 // import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react"
 // import { Todo } from "./types";
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
 import {LOAD_USERS} from '../Graphql/Query'
 
@@ -10,7 +10,9 @@ import { useMutation } from "@apollo/client";
 export function Gettodos() {
     const {error, loading, data} = useQuery(LOAD_USERS)
     const [todos, settodos] = useState([])
-    const [deletetask] = useMutation(DELETE_TASK)
+
+    const [deletetask] = useMutation(DELETE_TASK, {
+        refetchQueries: [{ query: LOAD_USERS }]})
     const deltask = (id:number) => {
         deletetask({
             variables: {
@@ -21,24 +23,26 @@ export function Gettodos() {
         });
     };
     
-    useEffect(()=>{
+    useMemo(()=>{
         if(data){
             settodos(data.tasks);
         }         
-        
+
     }, [data])
+
     if(loading){
         return "Loading...."
     }
+
     if(error){
         console.log(error)
     }
-    return <div className="my-5 flex flex-col ">
-        
-        {todos.map((todo)=>{
+
+    return <div className="my-5 flex flex-col ">      
+        {todos.map((todo, index)=>{
             return(
                 todo.completed === false ?
-               <div className="flex justify-center text-2xl">
+               <div  key={index} className="flex justify-center text-2xl">
                 <h1 className="mx-5">{todo.title}</h1>  
                 <button   onClick={  () =>{
                     deltask(Number(todo.id!))

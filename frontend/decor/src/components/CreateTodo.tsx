@@ -1,12 +1,15 @@
 import { useState } from "react"
 import { CREATE_USER_MUTATION } from "../Graphql/Mutation";
 import { useMutation } from "@apollo/client";
+import { LOAD_USERS } from "../Graphql/Query";
 
 
 export const Task =   () => {
     const [Title, setTitle] = useState("");
-
-    const [createtask , {error}] = useMutation(CREATE_USER_MUTATION)
+    
+    
+    const [createtask , {error}] = useMutation(CREATE_USER_MUTATION, {
+        refetchQueries: [{ query: LOAD_USERS  }]} )
 
     const  addUser = () =>{
         createtask({
