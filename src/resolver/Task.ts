@@ -4,10 +4,7 @@ import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 
 @Resolver()
 export class Taskresolver {
-    @Query(()=> String)
-    hello(): string{
-        return "hellowold"
-    }
+   
     // get all tasks
     @Query(()=> [User])
     tasks() : Promise<User[]> {
@@ -39,12 +36,13 @@ export class Taskresolver {
     
     //update task
     @Mutation(() => Boolean, { nullable: true })
-  updateTask(
+  EditTask(
     @Arg("id", () => Int)
     id: number,
 
-    @Arg("completed", () => Boolean)
-    completed: boolean
+    @Arg("title", () => String)
+    title:string
+    
   ): boolean | null {
     const task = User.findOneBy({id});
     if (!task) {
@@ -52,7 +50,7 @@ export class Taskresolver {
     }
 
     try {
-      User.update({ id }, { completed });
+      User.update({ id }, { title});
       return true;
     } catch {
       return false;

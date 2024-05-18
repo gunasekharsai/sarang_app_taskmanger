@@ -25,3 +25,17 @@ export const DELETE_TASK =gql`
   }
 
 `
+
+export const EDIT_TASK = gql`
+  mutation EditTask(
+    $id : Float!,
+    $title: String!
+  ){
+    EditTask(
+      id : $id,
+      title: $title
+    ){
+      id
+    }
+  }
+`
